@@ -21,6 +21,9 @@ public class DBService {
         initData();
     }
 
+    public void deleteOrder(Order order){
+        allOrders.remove(order);
+    }
 
 
     public void insertUser(User user) {

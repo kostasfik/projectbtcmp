@@ -1,6 +1,7 @@
 package dev.ctrlspace.bootcamp2410.kostas.bootcamp2410kostas.services;
 
 import dev.ctrlspace.bootcamp2410.kostas.bootcamp2410kostas.models.Product;
+import dev.ctrlspace.bootcamp2410.kostas.bootcamp2410kostas.models.ProductCart;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +10,11 @@ import java.util.List;
 public class ProductService {
 
     private DBService dbService;
+
+    public Product getProductBySKU(String sku) {
+        return dbService.getProductBySKU(sku);
+    }
+
 
     public ProductService(DBService dbService) {
         this.dbService = dbService;
@@ -48,5 +54,19 @@ public class ProductService {
         return product;
     }
 
+    public void returnProductsToStock(List<ProductCart> cart) {
+        for (ProductCart productCart : cart) {
+            Product stockProduct = getProductBySKU(productCart.getProduct().getSku());
+            stockProduct.setStockQuantity(stockProduct.getStockQuantity() + productCart.getCartQuantity());
+        }
+    }
+
+
+    public void removeProductsFromStock(List<ProductCart> cart) {
+        for (ProductCart productCart : cart) {
+            Product stockProduct = getProductBySKU(productCart.getProduct().getSku());
+            stockProduct.setStockQuantity(stockProduct.getStockQuantity() - productCart.getCartQuantity());
+        }
+    }
 
 }

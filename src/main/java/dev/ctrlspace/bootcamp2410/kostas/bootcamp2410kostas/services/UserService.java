@@ -14,6 +14,22 @@ public class UserService {
         this.dbService = dbService;
     }
 
+    public User login(String email, String password) throws Exception {
+        User user = dbService.getUserByEmail(email);
+
+        if (user == null){
+            throw new Exception("User not found");
+        }
+
+        if (!user.getPassword().equals(password)){
+            throw new Exception("Invalid password");
+        }
+
+
+        return user;
+    }
+
+
     public List<User> getAllUsers() {
         return dbService.getAllUsers();
     }
